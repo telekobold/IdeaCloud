@@ -49,12 +49,12 @@ public class HtmlBuilder {
 	indentationIncreaseTags.add("<main>");
 	indentationIncreaseTags.add("<ul>");
 
-	indentationDecreaseTags.add("<\\html>");
-	indentationDecreaseTags.add("<\\head>");
-	indentationDecreaseTags.add("<\\body>");
-	indentationDecreaseTags.add("<\\header>");
-	indentationDecreaseTags.add("<\\main>");
-	indentationDecreaseTags.add("<\\ul>");
+	indentationDecreaseTags.add("</html>");
+	indentationDecreaseTags.add("</head>");
+	indentationDecreaseTags.add("</body>");
+	indentationDecreaseTags.add("</header>");
+	indentationDecreaseTags.add("</main>");
+	indentationDecreaseTags.add("</ul>");
     }
 
     /**
