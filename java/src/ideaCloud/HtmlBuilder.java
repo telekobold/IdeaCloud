@@ -64,8 +64,8 @@ public class HtmlBuilder {
      * @return this {@code HtmlBuilder}
      */
     public HtmlBuilder comment(String... lines) {
-	return append("<!--").append(lines)
-		.add("-->");
+	return append("<!-- ").append(lines)
+		.append(" -->");
     }
 
     /**
