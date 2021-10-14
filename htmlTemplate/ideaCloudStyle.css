@@ -1,0 +1,69 @@
+ 
+/* Created with the aid of the tag cloud creation tutorial https://dev.to/alvaromontoro/create-a-tag-cloud-with-html-and-css-1e90 */
+
+* {
+  background-color: black;
+}
+
+ul.cloud {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  line-height: 2.5rem;
+}
+
+
+/* Rules for defining the font size of an <a> tag depending on the value of its data-weight attribute: */
+ul.cloud a[data-weight="1"] { --size: 1; }
+ul.cloud a[data-weight="2"] { --size: 2; }
+ul.cloud a[data-weight="3"] { --size: 3; }
+ul.cloud a[data-weight="4"] { --size: 4; }
+ul.cloud a[data-weight="5"] { --size: 5; }
+ul.cloud a[data-weight="6"] { --size: 6; }
+ul.cloud a[data-weight="7"] { --size: 7; }
+ul.cloud a[data-weight="8"] { --size: 8; }
+ul.cloud a[data-weight="9"] { --size: 9; }
+ul.cloud a[data-weight="10"] { --size: 10; }
+ul.cloud a[data-weight="11"] { --size: 11; }
+ul.cloud a[data-weight="12"] { --size: 12; }
+ul.cloud a[data-weight="13"] { --size: 13; }
+ul.cloud a[data-weight="14"] { --size: 14; }
+ul.cloud a[data-weight="15"] { --size: 15; }
+
+
+ul.cloud a {
+  color: #ff9933; /* The default color */
+  display: block;
+  font-size: 1.5rem; /* The default font size */
+  padding: 0.125rem 0.25rem; /*anpassen*/
+  text-decoration: none;
+  position: relative;
+  
+  /* Font size depending on the data-weight defined in the HTML code (see rules above): */
+  font-size: calc(var(--size) * 0.25rem + 0.5rem);
+}
+
+
+/* If a deadline attribute is defined in the HTML code, this deadline is shown.
+   The deadline should have the format yyyy-mm-dd. */
+ul.cloud a[deadline]::after {
+  content: " (deadline: " attr(deadline) ")";
+  font-size: 1rem;
+}
+
+
+/* Adding some color to the items in the idea cloud: */
+/*
+ul.cloud li:nth-child(2n+1) a { color: magenta; }
+ul.cloud li:nth-child(3n+1) a { color: green; }
+ul.cloud li:nth-child(4n+1) a { color: red; }
+*/
+
+
+/* Adds a dashed line around an item when clicking on it: */
+ul.cloud a:focus {
+  outline: 1px dashed;
+} 
