@@ -5,6 +5,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * 
+ * @author Michael Merz <mail@telekobold.de>
+ */
 class IdeaCloudHtmlGenerator {
 
     private final HtmlBuilder ideaCloud_html;

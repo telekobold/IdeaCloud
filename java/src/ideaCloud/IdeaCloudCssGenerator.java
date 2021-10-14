@@ -1,5 +1,9 @@
 package ideaCloud;
 
+/**
+ * 
+ * @author Michael Merz <mail@telekobold.de>
+ */
 class IdeaCloudCssGenerator {
 
     private final CssBuilder ideaCloud_css;

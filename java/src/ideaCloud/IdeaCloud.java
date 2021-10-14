@@ -2,6 +2,10 @@ package ideaCloud;
 
 import java.io.IOException;
 
+/**
+ * 
+ * @author Michael Merz <mail@telekobold.de>
+ */
 public class IdeaCloud {
 
     static IdeaCloudHtmlGenerator ic_html;
