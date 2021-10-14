@@ -2,7 +2,8 @@ package ideaCloud;
 
 public class IdeaCloud {
 
-	IdeaCloud ic = new IdeaCloud();
+	IdeaCloudHtmlGenerator ic_html = new IdeaCloudHtmlGenerator();
+	IdeaCloudCssGenerator ic_css = new IdeaCloudCssGenerator();
 
 	public static void main(String[] args) {
 
