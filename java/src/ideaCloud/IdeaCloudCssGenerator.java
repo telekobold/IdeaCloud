@@ -1,7 +1,15 @@
 package ideaCloud;
 
-public class IdeaCloudCssGenerator {
+class IdeaCloudCssGenerator {
 
-	private final CssBuilder ideaCloud_css = new CssBuilder();
+	private final CssBuilder ideaCloud_css;
+
+	IdeaCloudCssGenerator() {
+		ideaCloud_css = new CssBuilder();
+	}
+
+	void generateIdeaCloudCssFile() {
+
+	}
 
 }

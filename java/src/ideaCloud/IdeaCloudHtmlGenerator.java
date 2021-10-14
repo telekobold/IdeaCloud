@@ -1,7 +1,15 @@
 package ideaCloud;
 
-public class IdeaCloudHtmlGenerator {
+class IdeaCloudHtmlGenerator {
 
-	private final HtmlBuilder ideaCloud_html = new HtmlBuilder();
+	private final HtmlBuilder ideaCloud_html;
+
+	IdeaCloudHtmlGenerator() {
+		ideaCloud_html = new HtmlBuilder();
+	}
+
+	void generateIdeaCloudHtmlFile() {
+
+	}
 
 }
