@@ -1,4 +1,4 @@
-package ideaCloud;
+package de.telekobold.ideacloud;
 
 import java.util.ArrayList;
 import java.util.List;
