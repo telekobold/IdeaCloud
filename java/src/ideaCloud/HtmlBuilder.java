@@ -92,7 +92,10 @@ public class HtmlBuilder {
      * @return this {@code HtmlBuilder}
      */
     public HtmlBuilder append(String... lines) {
-	return add(false, lines);
+	for (String line : lines) {
+	    content.append(line);
+	}
+	return this;
     }
 
     /**
@@ -103,22 +106,8 @@ public class HtmlBuilder {
      * @return this {@code HtmlBuilder}
      */
     public HtmlBuilder add(String... lines) {
-	return add(true, lines);
-    }
-
-    /**
-     * Adds one or more lines of text to this {@code HtmlBuilder}.
-     *
-     * @param linebreak {@code true} if there should be a linebreak after each line,
-     *                  {@code false} otherwise
-     * @param lines     the text of the lines
-     * @return this {@code HtmlBuilder}
-     */
-    private HtmlBuilder add(boolean linebreak, String... lines) {
 	for (String line : lines) {
-	    if (linebreak) {
-		content.append("\n");
-	    }
+	    content.append("\n");
 	    if (line == null) {
 		line = "";
 	    }

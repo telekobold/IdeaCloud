@@ -32,12 +32,10 @@ class IdeaCloudHtmlGenerator {
 		.add("</head>")
 		.add("<body>")
 		.add("<header>")
-		.append("blub1 ")
-		.append("gnampf1")
-		// TODO: append-Methode, welche ohne Zeilenumbruch einfügt
-		// .add("<h1>")
+		.add("<h1>")
+		.append("IdeaCloud")
+		.append("</h1>")
 		.add("</header>")
-		.append("blub2")
 		.add("</body>")
 		.add("</html>");
 
