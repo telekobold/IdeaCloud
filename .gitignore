@@ -1,0 +1,6 @@
+
+# Java related stuff to be ignored:
+/**/.classpath
+/**/.project
+/**/bin/
+/**/*.jar
