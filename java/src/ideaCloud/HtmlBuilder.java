@@ -64,7 +64,7 @@ public class HtmlBuilder {
      * @return this {@code HtmlBuilder}
      */
     public HtmlBuilder comment(String... lines) {
-	return add("<!--").add(lines)
+	return append("<!--").append(lines)
 		.add("-->");
     }
 
@@ -86,14 +86,39 @@ public class HtmlBuilder {
     }
 
     /**
-     * Adds one or more lines of text to this {@code HtmlBuilder}.
-     *
-     * @param commentPrefix the prefix for each of the lines inside comments
-     * @param lines         the text of the lines
+     * Appends one or more lines to this HtmlBuilder without newlines.
+     * 
+     * @param lines the lines to be added
+     * @return this {@code HtmlBuilder}
+     */
+    public HtmlBuilder append(String... lines) {
+	return add(false, lines);
+    }
+
+    /**
+     * Adds one or more lines to this HtmlBuilder where a newline is added before
+     * each line.
+     * 
+     * @param lines the lines to be added
      * @return this {@code HtmlBuilder}
      */
     public HtmlBuilder add(String... lines) {
+	return add(true, lines);
+    }
+
+    /**
+     * Adds one or more lines of text to this {@code HtmlBuilder}.
+     *
+     * @param linebreak {@code true} if there should be a linebreak after each line,
+     *                  {@code false} otherwise
+     * @param lines     the text of the lines
+     * @return this {@code HtmlBuilder}
+     */
+    private HtmlBuilder add(boolean linebreak, String... lines) {
 	for (String line : lines) {
+	    if (linebreak) {
+		content.append("\n");
+	    }
 	    if (line == null) {
 		line = "";
 	    }
@@ -110,8 +135,8 @@ public class HtmlBuilder {
 		}
 	    }
 	    // append the content line
-	    content.append(line)
-		    .append("\n");
+	    content.append(line);
+
 	    // check if the current line should start a block
 	    for (String s : indentationIncreaseTags) {
 		if (line.startsWith(s)) {
