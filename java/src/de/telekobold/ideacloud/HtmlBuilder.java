@@ -134,8 +134,8 @@ public class HtmlBuilder {
 	    for (String s : indentationIncreaseTags) {
 		if (line.startsWith(s)) {
 		    beginBlock();
-		    break; // Otherwise, beginBlock() would be called two times e.g. for "<header" since it
-			   // matches "<head" as well as "<header".
+		    break; // Otherwise, beginBlock() would be called two times, e.g. for "<header". since
+			   // the startsWith check matches "<head" as well as "<header".
 		}
 	    }
 	}
