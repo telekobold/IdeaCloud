@@ -34,9 +34,7 @@ class IdeaCloudHtmlGenerator {
 		.add("</head>")
 		.add("<body>")
 		.add("<header>")
-		.add("<h1>")
-		.append("IdeaCloud")
-		.append("</h1>")
+		.add("<h1>IdeaCloud</h1>")
 		.add("</header>")
 		.add("<main>")
 		.add("<ul class=\"cloud\" role=\"navigation\" aria-label=\"idea tag cloud for planning\">");
@@ -58,8 +56,8 @@ class IdeaCloudHtmlGenerator {
 
 	ideaCloud_html.add("</ul>")
 		.add("</main>")
-		.add("</body>");
-	// .add("</html>");
+		.add("</body>")
+		.add("</html>");
 
 	generateOutputFile("ideaCloud.html", ideaCloud_html);
 

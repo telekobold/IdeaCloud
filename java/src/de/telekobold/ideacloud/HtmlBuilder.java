@@ -43,12 +43,14 @@ public class HtmlBuilder {
 
     // To be supplemented by further tags (e.g. <nav>, <footer>) if needed.
     public void initialize() {
-	indentationIncreaseTags.add("<html>");
-	indentationIncreaseTags.add("<head>");
-	indentationIncreaseTags.add("<body>");
-	indentationIncreaseTags.add("<header>");
-	indentationIncreaseTags.add("<main>");
-	indentationIncreaseTags.add("<ul>");
+	// The trailing ">" must not be mentioned here since attributes could follow
+	// before the ">".
+	indentationIncreaseTags.add("<html");
+	indentationIncreaseTags.add("<head");
+	indentationIncreaseTags.add("<body");
+	indentationIncreaseTags.add("<header");
+	indentationIncreaseTags.add("<main");
+	indentationIncreaseTags.add("<ul");
 
 	indentationDecreaseTags.add("</html>");
 	indentationDecreaseTags.add("</head>");
@@ -116,6 +118,7 @@ public class HtmlBuilder {
 	    for (String s : indentationDecreaseTags) {
 		if (line.startsWith(s)) {
 		    endBlock();
+		    break;
 		}
 	    }
 	    // append the right amount of indent
@@ -131,6 +134,8 @@ public class HtmlBuilder {
 	    for (String s : indentationIncreaseTags) {
 		if (line.startsWith(s)) {
 		    beginBlock();
+		    break; // Otherwise, beginBlock() would be called two times e.g. for "<header" since it
+			   // matches "<head" as well as "<header".
 		}
 	    }
 	}
