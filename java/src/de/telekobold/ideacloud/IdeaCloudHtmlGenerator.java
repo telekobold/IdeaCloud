@@ -41,20 +41,25 @@ class IdeaCloudHtmlGenerator {
 		.add("<main>")
 		.add("<ul class=\"cloud\" role=\"navigation\" aria-label=\"idea tag cloud for planning\">");
 
-	for (IdeaCloudTriple inputTag : inputTags) {
-	    ideaCloud_html.add("<li><a href=\"")
-		    .append("")
+	for (IdeaCloudTriple<String, Integer, String> inputTag : inputTags) {
+	    ideaCloud_html.add("<li><a href=\"./data/")
+		    .append(inputTag.getTagName() + ".html")
 		    .append("\" data-weight=\"")
-		    .append("")
-		    .append("\">")
-		    .append("")
+		    .append(Integer.toString(inputTag.getWeight()));
+	    if (inputTag.getDeadline() != null) {
+		ideaCloud_html.append(" deadline=\"")
+			.append(inputTag.getDeadline())
+			.append("\"");
+	    }
+	    ideaCloud_html.append("\">")
+		    .append(inputTag.getTagName())
 		    .append("</a></li>");
 	}
 
 	ideaCloud_html.add("</ul>")
 		.add("</main>")
-		.add("</body>")
-		.add("</html>");
+		.add("</body>");
+	// .add("</html>");
 
 	generateOutputFile("ideaCloud.html", ideaCloud_html);
 

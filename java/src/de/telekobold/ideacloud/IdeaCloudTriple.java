@@ -23,7 +23,9 @@ public class IdeaCloudTriple<T, U, V> {
 	    throw new IllegalArgumentException("weight must be a value between 1 and 15!");
 	}
 	// check if the given deadline is a valid date
-	if (deadline.matches("[0-9]{4}-[0-1][0-9]-[0-3][0-9]")) {
+	if (deadline == null) {
+	    this.deadline = "";
+	} else if (deadline.matches("[0-9]{4}-[0-1][0-9]-[0-3][0-9]")) {
 	    this.deadline = deadline;
 	} else {
 	    throw new IllegalArgumentException("deadline must have the form yyyy-mm-dd!");

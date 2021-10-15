@@ -14,6 +14,13 @@ public class IdeaCloud {
     public static void main(String[] args) throws IOException {
 	ic_html = new IdeaCloudHtmlGenerator();
 	// ic_css = new IdeaCloudCssGenerator();
-	ic_html.generateIdeaCloudHtmlFile();
+
+	// Test data
+	// TODO: substitute with input data from GUI
+	IdeaCloudTriple<String, Integer, String>[] ideaCloudTriple = new IdeaCloudTriple[3];
+	ideaCloudTriple[0] = new IdeaCloudTriple<String, Integer, String>("blubgnampf1", 12, "2021-11-10");
+	ideaCloudTriple[1] = new IdeaCloudTriple<String, Integer, String>("blubgnampf2", 2, null);
+	ideaCloudTriple[2] = new IdeaCloudTriple<String, Integer, String>("blubgnampf3", 6, null);
+	ic_html.generateIdeaCloudHtmlFile(ideaCloudTriple);
     }
 }
