@@ -14,14 +14,20 @@ public class IdeaCloudTriple<T, U, V> {
     private final Integer weight;
     private final String deadline;
 
-    public IdeaCloudTriple(String first, Integer second, String third) {
-	this.tagName = first;
-	if (second >= 1) {
-	    this.weight = second;
+    public IdeaCloudTriple(String tagName, Integer weight, String deadline) {
+	this.tagName = tagName;
+	// check if the given weight is a positive value between 1 and 15
+	if (weight >= 1 && weight <= 15) {
+	    this.weight = weight;
 	} else {
-	    throw new IllegalArgumentException("weight must be positive!");
+	    throw new IllegalArgumentException("weight must be a value between 1 and 15!");
 	}
-	this.deadline = third;
+	// check if the given deadline is a valid date
+	if (deadline.matches("[0-9]{4}-[0-1][0-9]-[0-3][0-9]")) {
+	    this.deadline = deadline;
+	} else {
+	    throw new IllegalArgumentException("deadline must have the form yyyy-mm-dd!");
+	}
     }
 
     public String getTagName() {
