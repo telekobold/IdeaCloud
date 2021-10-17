@@ -28,12 +28,8 @@ import java.util.List;
  * 
  * @author Michael Merz <mail@telekobold.de>
  */
+public class HtmlBuilder extends AbstractBuilder {
 
-public class HtmlBuilder {
-
-    private static final String INDENTATION = "    ";
-    private int indent = 0;
-    private StringBuilder content = new StringBuilder();
     private final List<String> indentationIncreaseTags = new ArrayList<>();
     private final List<String> indentationDecreaseTags = new ArrayList<>();
 
@@ -63,77 +59,38 @@ public class HtmlBuilder {
 	indentationDecreaseTags.add("</ul>");
     }
 
-    /**
-     * Appends one or more single line comments to this {@code HtmlBuilder}
-     *
-     * @param lines the text of the comment lines
-     * @return this {@code HtmlBuilder}
-     */
-    public HtmlBuilder comment(String... lines) {
+    @Override
+    public AbstractBuilder comment(String... lines) {
 	return append("<!-- ").append(lines)
 		.append(" -->");
     }
 
-    /**
-     * Adds an empty line.
-     *
-     * @return this {@code HtmlBuilder}
-     */
-    public HtmlBuilder nl() {
-	return add("");
-    }
-
-    /**
-     * Clears this {@code HtmlBuilder}, i.e. all code is lost.
-     */
-    public void clear() {
-	indent = 0;
-	content = new StringBuilder();
-    }
-
-    /**
-     * Appends one or more lines to this HtmlBuilder without newlines.
-     * 
-     * @param lines the lines to be added
-     * @return this {@code HtmlBuilder}
-     */
-    public HtmlBuilder append(String... lines) {
-	for (String line : lines) {
-	    content.append(line);
-	}
-	return this;
-    }
-
-    /**
-     * Adds one or more lines to this HtmlBuilder where a newline is added before
-     * each line.
-     * 
-     * @param lines the lines to be added
-     * @return this {@code HtmlBuilder}
-     */
+    @Override
     public HtmlBuilder add(String... lines) {
 	for (String line : lines) {
 	    content.append("\n");
 	    if (line == null) {
 		line = "";
 	    }
-	    // check if the current line should end a block
+
+	    // Check if the current line should end a block.
 	    for (String s : indentationDecreaseTags) {
 		if (line.startsWith(s)) {
 		    endBlock();
 		    break;
 		}
 	    }
-	    // append the right amount of indent
+
+	    // Append the right amount of indent.
 	    if (!line.isEmpty()) {
 		for (int i = 0; i < indent; ++i) {
 		    content.append(INDENTATION);
 		}
 	    }
-	    // append the content line
+	    // Append the content line.
 	    content.append(line);
 
-	    // check if the current line should start a block
+	    // Check if the current line should start a block.
 	    for (String s : indentationIncreaseTags) {
 		if (line.startsWith(s)) {
 		    beginBlock();
@@ -175,14 +132,4 @@ public class HtmlBuilder {
 	return this;
     }
 
-    /**
-     * @return the content of this {@code HtmlBuilder}
-     */
-    @Override
-    public String toString() {
-	if (indent > 0) {
-	    throw new IllegalStateException(indent + " missing endBlock calls");
-	}
-	return content.toString();
-    }
 }
