@@ -41,6 +41,9 @@ public class HtmlBuilder {
 	initialize();
     }
 
+    /**
+     * Initializes needed, internal fields.
+     */
     // To be supplemented by further tags (e.g. <nav>, <footer>) if needed.
     public void initialize() {
 	// The trailing ">" must not be mentioned here since attributes could follow
