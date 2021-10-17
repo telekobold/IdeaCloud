@@ -1,4 +1,4 @@
-package de.telekobold.ideacloud;
+package de.telekobold.ideacloud.codegenerator;
 
 /**
  * {@code AbstractBuilder} facilitates to generate nicely formatted code with

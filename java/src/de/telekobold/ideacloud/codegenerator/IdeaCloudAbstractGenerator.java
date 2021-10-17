@@ -1,4 +1,4 @@
-package de.telekobold.ideacloud;
+package de.telekobold.ideacloud.codegenerator;
 
 import java.io.BufferedWriter;
 import java.io.File;

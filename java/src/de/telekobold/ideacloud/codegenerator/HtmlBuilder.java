@@ -1,4 +1,4 @@
-package de.telekobold.ideacloud;
+package de.telekobold.ideacloud.codegenerator;
 
 import java.util.ArrayList;
 import java.util.List;

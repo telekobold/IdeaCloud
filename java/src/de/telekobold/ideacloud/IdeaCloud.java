@@ -2,6 +2,8 @@ package de.telekobold.ideacloud;
 
 import java.io.IOException;
 
+import de.telekobold.ideacloud.codegenerator.IdeaCloudHtmlGenerator;
+
 /**
  * 
  * @author Michael Merz <mail@telekobold.de>

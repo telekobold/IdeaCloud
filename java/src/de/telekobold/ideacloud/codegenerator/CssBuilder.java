@@ -1,4 +1,4 @@
-package de.telekobold.ideacloud;
+package de.telekobold.ideacloud.codegenerator;
 
 /**
  * {@code CssBuilder} facilitates to generate nicely formatted CSS code with
