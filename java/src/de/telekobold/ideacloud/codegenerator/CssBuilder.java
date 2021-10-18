@@ -46,19 +46,16 @@ public class CssBuilder extends AbstractBuilder {
 	    if (line == null) {
 		line = "";
 	    }
-
 	    // Check if the current line should end a block
 	    if (line.startsWith("}")) {
 		// indent may be either 0 or 1 in the current usage of this program.
 		indent = 0;
 	    }
-
 	    // Append an indentation
-	    if (!line.isEmpty()) {
-		if (indent == 1) {
-		    content.append(INDENTATION);
-		}
+	    if (!line.isEmpty() && indent == 1) {
+		content.append(INDENTATION);
 	    }
+	    content.append(line); // Append the content line.
 	    // Check if the current line should start a block.
 	    if (line.endsWith("{")) {
 		indent = 1;

@@ -72,7 +72,6 @@ public class HtmlBuilder extends AbstractBuilder {
 	    if (line == null) {
 		line = "";
 	    }
-
 	    // Check if the current line should end a block.
 	    for (String s : indentationDecreaseTags) {
 		if (line.startsWith(s)) {
@@ -80,16 +79,13 @@ public class HtmlBuilder extends AbstractBuilder {
 		    break;
 		}
 	    }
-
 	    // Append the right amount of indent.
 	    if (!line.isEmpty()) {
 		for (int i = 0; i < indent; ++i) {
 		    content.append(INDENTATION);
 		}
 	    }
-	    // Append the content line.
-	    content.append(line);
-
+	    content.append(line); // Append the content line.
 	    // Check if the current line should start a block.
 	    for (String s : indentationIncreaseTags) {
 		if (line.startsWith(s)) {
