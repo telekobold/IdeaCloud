@@ -2,6 +2,7 @@ package de.telekobold.ideacloud;
 
 import java.io.IOException;
 
+import de.telekobold.ideacloud.codegenerator.IdeaCloudCssGenerator;
 import de.telekobold.ideacloud.codegenerator.IdeaCloudHtmlGenerator;
 
 /**
@@ -11,11 +12,10 @@ import de.telekobold.ideacloud.codegenerator.IdeaCloudHtmlGenerator;
 public class IdeaCloud {
 
     static IdeaCloudHtmlGenerator ic_html;
-    // static IdeaCloudCssGenerator ic_css;
+    static IdeaCloudCssGenerator ic_css;
 
     public static void main(String[] args) throws IOException {
 	ic_html = new IdeaCloudHtmlGenerator();
-	// ic_css = new IdeaCloudCssGenerator();
 
 	// Test data
 	// TODO: substitute with input data from GUI
@@ -24,5 +24,8 @@ public class IdeaCloud {
 	ideaCloudTriple[1] = new IdeaCloudTriple<String, Integer, String>("blubgnampf2", 2, null);
 	ideaCloudTriple[2] = new IdeaCloudTriple<String, Integer, String>("blubgnampf3", 6, null);
 	ic_html.generateIdeaCloudHtmlFile(ideaCloudTriple);
+
+	ic_css = new IdeaCloudCssGenerator();
+	ic_css.generateIdeaCloudCssFile();
     }
 }

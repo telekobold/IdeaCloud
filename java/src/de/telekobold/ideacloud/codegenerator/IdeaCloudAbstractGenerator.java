@@ -14,7 +14,7 @@ public abstract class IdeaCloudAbstractGenerator {
      * @param outputContent the content to write to the file
      * @throws IOException
      */
-    static void generateOutputFile(String fileName, HtmlBuilder outputContent) throws IOException {
+    static void generateOutputFile(String fileName, AbstractBuilder outputContent) throws IOException {
 	// TODO: Gewünschten Speicherort abfragen oder im Home-Verzeichnis in
 	// verstecktem Verzeichnis ablegen, oder von Einstellung in GUI abhängig machen.
 	File outputFile = new File("/home/telekobold/TestVerzeichnis/IdeaCloudTest/" + fileName);
