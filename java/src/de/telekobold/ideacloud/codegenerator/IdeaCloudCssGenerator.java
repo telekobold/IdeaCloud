@@ -72,14 +72,14 @@ public class IdeaCloudCssGenerator extends IdeaCloudAbstractGenerator {
 		.nl();
 
 	ideaCloud_css.comment("A deadline is displayed only if a deadline attribute is defined in the HTML code:");
-	ideaCloud_css.add("ul.cloud a[deadline]::after {")
+	ideaCloud_css.add("ul.cloud a[deadline]::after {") // mci (see above)
 		.addPropValPair("content", "\" (deadline: \" attr(deadline) \")\"")
 		.addPropValPair("font-size", "1rem")
 		.add("}")
 		.nl();
 
 	ideaCloud_css.comment("Adds a dashed line around an item when clicking on it:");
-	ideaCloud_css.add("ul.cloud a:focus {")
+	ideaCloud_css.add("ul.cloud a:focus {") // mci (see above)
 		.addPropValPair("outline", "1px dashed")
 		.add("}")
 		.nl();
