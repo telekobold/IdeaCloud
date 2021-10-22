@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -19,6 +20,10 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import de.telekobold.ideacloud.IdeaCloudTriple;
+import de.telekobold.ideacloud.codegenerator.IdeaCloudCssGenerator;
+import de.telekobold.ideacloud.codegenerator.IdeaCloudHtmlGenerator;
+
 /**
  * The first version of a graphical user interface for IdeaCloud.
  * <p>
@@ -31,6 +36,14 @@ public class IdeaCloudGui {
 
     private JFrame jFrameIdeaCloudGui;
     private JTextField jTextFieldNewItem;
+    private JComboBox jComboBoxPriority;
+
+    private final String[] priorities = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14",
+	    "15", };
+
+    static IdeaCloudHtmlGenerator ic_html;
+    static IdeaCloudCssGenerator ic_css;
+    private JTextField jTextFieldDeadline;
 
     /**
      * Launch the application.
@@ -60,6 +73,9 @@ public class IdeaCloudGui {
      * Initialize the contents of the frame.
      */
     private void initialize() {
+	ic_html = new IdeaCloudHtmlGenerator();
+	ic_css = new IdeaCloudCssGenerator();
+
 	jFrameIdeaCloudGui = new JFrame();
 	jFrameIdeaCloudGui.setTitle("IdeaCloud 1.0");
 	jFrameIdeaCloudGui.setBounds(50, 50, 800, 520);
@@ -73,43 +89,57 @@ public class IdeaCloudGui {
 
 	jTextFieldNewItem = new JTextField();
 	jTextFieldNewItem.setText("Item name");
+	jTextFieldNewItem.selectAll(); // TODO: Only for newly added items
 	jTextFieldNewItem.setColumns(10);
 
-	JComboBox comboBox = new JComboBox();
+	jComboBoxPriority = new JComboBox(priorities);
 
 	JLabel jLabelPriority = new JLabel("Priority (1 = highest, 15 = lowest)");
 
 	JLabel jLabelDeadline = new JLabel("Deadline");
 
-	JTextArea txtrDescribingText = new JTextArea();
-	txtrDescribingText.setText("Describing text");
+	JTextArea jTextAreaDescribingText = new JTextArea();
+	jTextAreaDescribingText.setText("Describing text");
+	jTextAreaDescribingText.selectAll(); // TODO: Only for newly added items
 
 	JButton jButtonAddItem = new JButton("Add");
 	jButtonAddItem.addActionListener(new ActionListener() {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
+		addIdeaCloudItem();
 	    }
 	});
+
+	jTextFieldDeadline = new JTextField();
+	jTextFieldDeadline.setColumns(10);
+
+	JLabel jLabelDeadlineHint = new JLabel("Please enter the deadline in the form yyyy-mm-dd");
 	GroupLayout groupLayout = new GroupLayout(jFrameIdeaCloudGui.getContentPane());
 	groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 		.addGroup(groupLayout.createSequentialGroup()
 			.addGap(31)
 			.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 				.addComponent(jButtonAddItem)
-				.addComponent(txtrDescribingText, GroupLayout.PREFERRED_SIZE, 731,
+				.addComponent(jTextAreaDescribingText, GroupLayout.PREFERRED_SIZE, 731,
 					GroupLayout.PREFERRED_SIZE)
-				.addComponent(jLabelDeadline)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addComponent(jLabelPriority)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 66,
-						GroupLayout.PREFERRED_SIZE))
 				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
 					.addComponent(jLabelAddItem)
 					.addComponent(jButtonViewIdeaCloud)
 					.addComponent(jTextFieldNewItem, GroupLayout.DEFAULT_SIZE, 729, Short.MAX_VALUE)
 					.addComponent(lblCurrentlyLoadedIdeaCloud, GroupLayout.DEFAULT_SIZE,
-						GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+						GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addComponent(jLabelPriority)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(jComboBoxPriority, GroupLayout.PREFERRED_SIZE, 66,
+						GroupLayout.PREFERRED_SIZE))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addComponent(jLabelDeadline)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(jTextFieldDeadline, GroupLayout.PREFERRED_SIZE, 97,
+						GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(jLabelDeadlineHint)))
 			.addContainerGap(38, Short.MAX_VALUE)));
 	groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 		.addGroup(groupLayout.createSequentialGroup()
@@ -125,15 +155,20 @@ public class IdeaCloudGui {
 			.addGap(18)
 			.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 				.addComponent(jLabelPriority)
-				.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+				.addComponent(jComboBoxPriority, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 					GroupLayout.PREFERRED_SIZE))
 			.addGap(18)
-			.addComponent(jLabelDeadline)
+			.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+				.addComponent(jLabelDeadline)
+				.addComponent(jTextFieldDeadline, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+					GroupLayout.PREFERRED_SIZE)
+				.addComponent(jLabelDeadlineHint))
 			.addGap(18)
-			.addComponent(txtrDescribingText, GroupLayout.PREFERRED_SIZE, 118, GroupLayout.PREFERRED_SIZE)
+			.addComponent(jTextAreaDescribingText, GroupLayout.PREFERRED_SIZE, 118,
+				GroupLayout.PREFERRED_SIZE)
 			.addGap(18)
 			.addComponent(jButtonAddItem)
-			.addContainerGap(29, Short.MAX_VALUE)));
+			.addContainerGap(25, Short.MAX_VALUE)));
 	jFrameIdeaCloudGui.getContentPane()
 		.setLayout(groupLayout);
 
@@ -168,5 +203,34 @@ public class IdeaCloudGui {
 
 	JMenuItem jMenuItemAbout = new JMenuItem("About");
 	jMenuHelp.add(jMenuItemAbout);
+    }
+
+    private void loadIdeaCloud() {
+
+    }
+
+    private void viewIdeaCloud() {
+
+    }
+
+    private void addIdeaCloudItem() {
+	IdeaCloudTriple<String, Integer, String>[] ideaCloudTriple = new IdeaCloudTriple[1];
+	String selectedPriority = (String) jComboBoxPriority.getSelectedItem();
+	ideaCloudTriple[0] = new IdeaCloudTriple<String, Integer, String>(jTextFieldNewItem.getText(),
+		Integer.valueOf(selectedPriority), "1970-01-01");
+//		jTextFieldDeadline.getText() == "" ? null : jTextFieldDeadline.getText());
+	try {
+	    ic_html.generateIdeaCloudHtmlFile(ideaCloudTriple);
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+    }
+
+    private void addNewIdeaCloud() {
+
+    }
+
+    private void saveIdeaCloud() {
+
     }
 }
