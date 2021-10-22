@@ -19,10 +19,6 @@ package de.telekobold.ideacloud.codegenerator;
  * nicely formatted C code) from the Executable Models Project 2018
  * <https://www.uni-koblenz-landau.de/de/koblenz/fb4/aktuelles/mitteilungen/innovationspreis-emp>).
  * </p>
- * The generated cloud tag CSS code is derived from the <a href=
- * "https://dev.to/alvaromontoro/create-a-tag-cloud-with-html-and-css-1e90">cloud
- * tag generation tutorial</a> from Alvaro Montoro.
- * </p>
  * 
  * @author Michael Merz <mail@telekobold.de>
  */
@@ -60,6 +56,68 @@ public class CssBuilder extends AbstractBuilder {
 	    if (line.endsWith("{")) {
 		indent = 1;
 	    }
+	}
+	return this;
+    }
+
+    /**
+     * Adds a CSS property-value pair (of the form</br>
+     * {@code property: value;}
+     * 
+     * @param property the property to add to the property-value pair
+     * @param value    the value to add to the property-value pair
+     * @return this {@code AbstractBuilder}
+     */
+    public CssBuilder addPropValPair(String property, String value) {
+	return (CssBuilder) add(property).append(": ")
+		.append(value)
+		.append(";");
+    }
+
+    /**
+     * Adds a CSS rule specific for cloud tag generation defining the font size of
+     * an {@code <a>} tag depending on the value of its data-weight attribute. The
+     * generated rule looks like this:</br>
+     * <code>ul.cloud a[data-weight="{@code <value>}"] {--size:
+     * {@code <value>};}</code>
+     * 
+     * @param weight the wished data-weight attribute value
+     * @return this {@code AbstractBuilder}
+     */
+    public CssBuilder addUlCloudRule(int weight) {
+	String sweight = Integer.toString(weight);
+	return (CssBuilder) add("ul.cloud a[data-weight=\"").append(sweight)
+		.append("\"] { --size: ")
+		.append(sweight)
+		.append("; }");
+    }
+
+    /**
+     * Adds {@code fromWeight - toWeight} CSS rules specific for cloud tag
+     * generation defining the font size of {@code <a>} tags depending on the value
+     * of their data-weight attributes. The generated rules look like this:</br>
+     * <code>ul.cloud a[data-weight="{@code <fromWeight>}"] {--size:
+     * {@code <fromWeight>};}</code></br>
+     * <code>ul.cloud a[data-weight="{@code <fromWeight+1>}"] {--size:
+     * {@code <fromWeight+1>};}</code></br>
+     * <code>ul.cloud a[data-weight="{@code <fromWeight+2>}"] {--size:
+     * {@code <fromWeight+2>};}</code></br>
+     * ...</br>
+     * <code>ul.cloud a[data-weight="{@code <toWeight>}"] {--size:
+     * {@code <toWeight>};}</code></br>
+     * 
+     * @param fromWeight the value for the weight of the first rule to be generated.
+     *                   Must be {@code <= toWeight}.
+     * @param toWeight   the value for the wight of the last rule to be generated.
+     * @return this {@code AbstractBuilder}
+     * @throws IllegalArgumentException if {@code fromWeight} > {@code toWeight}
+     */
+    public CssBuilder addUlCloudRules(int fromWeight, int toWeight) {
+	if (fromWeight > toWeight) {
+	    throw new IllegalArgumentException("fromWeight must be <= toWeight!");
+	}
+	for (int i = fromWeight; i <= toWeight; i++) {
+	    addUlCloudRule(i);
 	}
 	return this;
     }
