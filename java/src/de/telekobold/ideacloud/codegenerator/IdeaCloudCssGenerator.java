@@ -29,25 +29,59 @@ public class IdeaCloudCssGenerator extends IdeaCloudAbstractGenerator {
 	 * a method is called that is implemented in a sub class of AbstractBuilder but
 	 * not as abstract or concrete method in AbstractBuilder (e.g. addPropValPair()
 	 * from CssBuilder). Only current fix for that: interrupt the method chain.
+	 * Further occurrence of this problem and fix is marked with "mci".
 	 */
 	ideaCloud_css.addPropValPair("background-color", "black")
-		.add("background-color: black;")
+		.addPropValPair("background-color", "black")
 		.add("}")
 		.nl();
+
 	ideaCloud_css.add("ul.cloud {")
-		.add("list-style: none;")
-		.add("padding-left: 0;")
-		.add("display: flex;")
-		.add("flex-wrap: wrap;")
-		.add("align-items: center;")
-		.add("justify-content: center;")
-		.add("line-height: 2.5rem")
+		.addPropValPair("list-style", "none")
+		.addPropValPair("padding-left", "0")
+		.addPropValPair("display", "flex")
+		.addPropValPair("flex-wrap", "wrap")
+		.addPropValPair("align-items", "center")
+		.addPropValPair("justify-content", "center")
+		.addPropValPair("line-height", "2.5rem")
 		.add("}")
 		.nl()
 		.nl();
+
 	ideaCloud_css.comment(
 		"Rules for defining the font size of an <a> tag depending on the value of its data-weight attribute:")
 		.addUlCloudRules(1, 15)
+		.nl();
+
+	ideaCloud_css.add("ul.cloud a {")
+		.addPropValPair("color", "#ff9933")
+		.append(" ") // space between the property-value-pair and the comment
+		.comment("The default color");
+	ideaCloud_css.addPropValPair("display", "block") // mci (see above)
+		.addPropValPair("font-size", "1.5rem")
+		.append(" ") // space between the property-value-pair and the comment
+		.comment("The default font size");
+	ideaCloud_css.addPropValPair("padding", "0.125rem 0.25rem") // mci (see above)
+		.addPropValPair("text-decoration", "none")
+		.addPropValPair("position", "relative")
+		.nl()
+		.comment("Font size depending on the data-weight defined in the HTML code (see rules above):");
+	ideaCloud_css.addPropValPair("font-size", "calc(var(--size) * 0.25rem + 0.5rem") // mci (see above)
+		.add("}")
+		.nl()
+		.nl();
+
+	ideaCloud_css.comment("A deadline is displayed only if a deadline attribute is defined in the HTML code:");
+	ideaCloud_css.add("ul.cloud a[deadline]::after {")
+		.addPropValPair("content", "\" (deadline: \" attr(deadline) \")\"")
+		.addPropValPair("font-size", "1rem")
+		.add("}")
+		.nl();
+
+	ideaCloud_css.comment("Adds a dashed line around an item when clicking on it:");
+	ideaCloud_css.add("ul.cloud a:focus {")
+		.addPropValPair("outline", "1px dashed")
+		.add("}")
 		.nl();
 
 	generateOutputFile("ideaCloud.css", ideaCloud_css);
