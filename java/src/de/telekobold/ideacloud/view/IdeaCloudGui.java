@@ -3,6 +3,7 @@ package de.telekobold.ideacloud.view;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -15,8 +16,17 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+/**
+ * The first version of a graphical user interface for IdeaCloud.
+ * <p>
+ * Developed with the help of the <i>WindowBuilder 1.9.1</i> Eclipse plugin by
+ * the Eclipse Foundation.
+ * 
+ * @author Michael Merz <mail@telekobold.de>
+ */
 public class IdeaCloudGui {
 
     private JFrame jFrameIdeaCloudGui;
@@ -67,7 +77,7 @@ public class IdeaCloudGui {
 
 	JComboBox comboBox = new JComboBox();
 
-	JLabel jLabelPriority = new JLabel("Priority");
+	JLabel jLabelPriority = new JLabel("Priority (1 = highest, 15 = lowest)");
 
 	JLabel jLabelDeadline = new JLabel("Deadline");
 
@@ -135,18 +145,26 @@ public class IdeaCloudGui {
 
 	JMenuItem jMenuItemLoadIdeaCloud = new JMenuItem("Load idea cloud");
 	jMenuFile.add(jMenuItemLoadIdeaCloud);
+	// An idea cloud is also loaded through typing "Ctrl. + L":
+	jMenuItemLoadIdeaCloud.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK));
 
 	JMenuItem jMenuItemNewIdeaCloud = new JMenuItem("New idea cloud");
 	jMenuFile.add(jMenuItemNewIdeaCloud);
+	// A new idea cloud is also created through typing "Ctrl. + N":
+	jMenuItemNewIdeaCloud.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
 
 	JMenuItem jMenuItemSaveIdeaCloud = new JMenuItem("Save currently loaded idea cloud");
 	jMenuFile.add(jMenuItemSaveIdeaCloud);
+	// An idea cloud is also saved through typing "Ctrl. + S":
+	jMenuItemSaveIdeaCloud.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
 
 	JMenu jMenuHelp = new JMenu("Help");
 	menuBar.add(jMenuHelp);
 
 	JMenuItem jMenuItemHelp = new JMenuItem("Help");
 	jMenuHelp.add(jMenuItemHelp);
+	// The help menu is also invoked through typing "Ctrl. + H":
+	jMenuItemHelp.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, ActionEvent.CTRL_MASK));
 
 	JMenuItem jMenuItemAbout = new JMenuItem("About");
 	jMenuHelp.add(jMenuItemAbout);
