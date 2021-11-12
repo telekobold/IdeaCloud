@@ -32,6 +32,10 @@ public class IdeaCloudHtmlGenerator extends IdeaCloudAbstractGenerator {
 		.add("<head>")
 		.add("<meta charset=\"utf-8\">")
 		.add("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">")
+		.add("<link rel=\"stylesheet\" type=\"text/css\" href=\"")
+		// Reuse the .html file name of this file and replace the ".html" by a ".css":
+		.append(filename.substring(0, filename.length() - 5))
+		.append(".css\">")
 		.add("</head>")
 		.add("<body>")
 		.add("<header>")
