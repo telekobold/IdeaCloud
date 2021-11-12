@@ -15,7 +15,8 @@ public class IdeaCloudCssGenerator extends IdeaCloudAbstractGenerator {
 
     private final CssBuilder ideaCloud_css;
 
-    public IdeaCloudCssGenerator() {
+    public IdeaCloudCssGenerator(String filename) {
+	super(filename);
 	ideaCloud_css = new CssBuilder();
     }
 
@@ -84,7 +85,7 @@ public class IdeaCloudCssGenerator extends IdeaCloudAbstractGenerator {
 		.add("}")
 		.nl();
 
-	generateOutputFile("ideaCloud.css", ideaCloud_css);
+	generateOutputFile(ideaCloud_css);
     }
 
 }

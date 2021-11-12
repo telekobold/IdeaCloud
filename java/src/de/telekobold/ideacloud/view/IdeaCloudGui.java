@@ -4,21 +4,25 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.io.IOException;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import de.telekobold.ideacloud.IdeaCloudTriple;
 import de.telekobold.ideacloud.codegenerator.IdeaCloudCssGenerator;
@@ -43,7 +47,10 @@ public class IdeaCloudGui {
 
     static IdeaCloudHtmlGenerator ic_html;
     static IdeaCloudCssGenerator ic_css;
+    private String currentFilePathHtml;
+    private String currentFilePathCss;
     private JTextField jTextFieldDeadline;
+    JLabel jLabelCurrentlyLoadedIdeaCloud;
 
     /**
      * Launch the application.
@@ -73,15 +80,12 @@ public class IdeaCloudGui {
      * Initialize the contents of the frame.
      */
     private void initialize() {
-	ic_html = new IdeaCloudHtmlGenerator();
-	ic_css = new IdeaCloudCssGenerator();
-
 	jFrameIdeaCloudGui = new JFrame();
 	jFrameIdeaCloudGui.setTitle("IdeaCloud 1.0");
 	jFrameIdeaCloudGui.setBounds(50, 50, 800, 520);
 	jFrameIdeaCloudGui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-	JLabel lblCurrentlyLoadedIdeaCloud = new JLabel("Currently loaded idea cloud:");
+	jLabelCurrentlyLoadedIdeaCloud = new JLabel("Currently loaded idea cloud:");
 
 	JButton jButtonViewIdeaCloud = new JButton("View idea cloud");
 
@@ -126,7 +130,7 @@ public class IdeaCloudGui {
 					.addComponent(jLabelAddItem)
 					.addComponent(jButtonViewIdeaCloud)
 					.addComponent(jTextFieldNewItem, GroupLayout.DEFAULT_SIZE, 729, Short.MAX_VALUE)
-					.addComponent(lblCurrentlyLoadedIdeaCloud, GroupLayout.DEFAULT_SIZE,
+					.addComponent(jLabelCurrentlyLoadedIdeaCloud, GroupLayout.DEFAULT_SIZE,
 						GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 				.addGroup(groupLayout.createSequentialGroup()
 					.addComponent(jLabelPriority)
@@ -144,7 +148,7 @@ public class IdeaCloudGui {
 	groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 		.addGroup(groupLayout.createSequentialGroup()
 			.addGap(24)
-			.addComponent(lblCurrentlyLoadedIdeaCloud)
+			.addComponent(jLabelCurrentlyLoadedIdeaCloud)
 			.addGap(18)
 			.addComponent(jButtonViewIdeaCloud)
 			.addGap(37)
@@ -179,6 +183,55 @@ public class IdeaCloudGui {
 	menuBar.add(jMenuFile);
 
 	JMenuItem jMenuItemLoadIdeaCloud = new JMenuItem("Load idea cloud");
+	jMenuItemLoadIdeaCloud.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		final JFileChooser fc = new JFileChooser();
+		FileNameExtensionFilter tgFileFilter = new FileNameExtensionFilter("HTML files", "html");
+		fc.setFileFilter(tgFileFilter);
+		// So that the open dialog is shown directly over the GlossarySearcher GUI.
+		int returnValue = fc.showOpenDialog(IdeaCloudGui.this.jFrameIdeaCloudGui);
+		if (returnValue == JFileChooser.APPROVE_OPTION) {
+		    String filename = fc.getSelectedFile()
+			    .getAbsolutePath();
+		    if (new File(filename).exists()) {
+			currentFilePathHtml = fc.getSelectedFile()
+				.getAbsolutePath();
+			// If the selected file does not end with ".html", it would not be displayed in
+			// the JFileChooser selection dialog. (This is not a problem since IdeaCloud
+			// only generates HTML files ending with .html.) So, no else branch is necessary
+			// for this if branch (and this if branch is only for safety).
+			if (currentFilePathHtml.endsWith(".html")) {
+			    // currentFilePathCss = currentFilePathHtml with the trailing ".html" replaced
+			    // by ".css".
+			    currentFilePathCss = currentFilePathHtml.substring(0, currentFilePathHtml.length() - 5)
+				    + ".css";
+			    if (new File(currentFilePathCss).exists()) {
+				ic_html = new IdeaCloudHtmlGenerator(currentFilePathHtml);
+				ic_css = new IdeaCloudCssGenerator(currentFilePathCss);
+				// Show the name of the loaded glossary as title of the window (just a
+				// workaround, should be solved nicer in future).
+				jFrameIdeaCloudGui.setTitle(fc.getSelectedFile()
+					.getName() + " - IdeaCloud 1.0");
+				// TODO: Besseren Namen als den absoluten Dateipfad anzeigen.
+				jLabelCurrentlyLoadedIdeaCloud
+					.setText("Currently loaded idea cloud: " + currentFilePathHtml);
+				JOptionPane.showMessageDialog(IdeaCloudGui.this.jFrameIdeaCloudGui,
+					"The selected idea cloud was loaded.");
+			    } else {
+				JOptionPane.showMessageDialog(IdeaCloudGui.this.jFrameIdeaCloudGui,
+					"No associated CSS file could be found. Idea cloud could not be loaded.");
+				this.actionPerformed(e);
+			    }
+			}
+		    } else {
+			JOptionPane.showMessageDialog(IdeaCloudGui.this.jFrameIdeaCloudGui,
+				"Please select a valid file (.html)");
+			this.actionPerformed(e);
+		    }
+		}
+	    }
+	});
 	jMenuFile.add(jMenuItemLoadIdeaCloud);
 	// An idea cloud is also loaded through typing "Ctrl. + L":
 	jMenuItemLoadIdeaCloud.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK));

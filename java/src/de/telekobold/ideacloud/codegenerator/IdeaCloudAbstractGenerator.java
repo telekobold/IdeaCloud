@@ -5,7 +5,20 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * Base class for all IdeaCloud code generator classes.
+ * 
+ * @author Michael Merz <mail@telekobold.de>
+ */
 public abstract class IdeaCloudAbstractGenerator {
+
+    // TODO: Add getters and setters for filename and check if filename is a valid
+    // file name.
+    public String filename;
+
+    public IdeaCloudAbstractGenerator(String filename) {
+	this.filename = filename;
+    }
 
     /**
      * Generates the output file of the {@code IdeaCloudAbstractGenerator}.
@@ -14,10 +27,8 @@ public abstract class IdeaCloudAbstractGenerator {
      * @param outputContent the content to write to the file
      * @throws IOException
      */
-    static void generateOutputFile(String fileName, AbstractBuilder outputContent) throws IOException {
-	// TODO: Gewünschten Speicherort abfragen oder im Home-Verzeichnis in
-	// verstecktem Verzeichnis ablegen, oder von Einstellung in GUI abhängig machen.
-	File outputFile = new File("/home/telekobold/TestVerzeichnis/IdeaCloudTest/" + fileName);
+    void generateOutputFile(AbstractBuilder outputContent) throws IOException {
+	File outputFile = new File(filename);
 	outputFile.createNewFile();
 	try (BufferedWriter out = new BufferedWriter(new FileWriter(outputFile.getAbsolutePath()));) {
 	    out.write(outputContent.toString());

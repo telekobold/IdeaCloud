@@ -17,7 +17,8 @@ public class IdeaCloudHtmlGenerator extends IdeaCloudAbstractGenerator {
 
     private final HtmlBuilder ideaCloud_html;
 
-    public IdeaCloudHtmlGenerator() {
+    public IdeaCloudHtmlGenerator(String filename) {
+	super(filename);
 	ideaCloud_html = new HtmlBuilder();
     }
 
@@ -59,7 +60,7 @@ public class IdeaCloudHtmlGenerator extends IdeaCloudAbstractGenerator {
 		.add("</body>")
 		.add("</html>");
 
-	generateOutputFile("ideaCloud.html", ideaCloud_html);
+	generateOutputFile(ideaCloud_html);
 
 	System.out.println("successfully finished.");
     }
