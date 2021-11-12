@@ -286,11 +286,10 @@ public class IdeaCloudGui {
 	    } else if (os.indexOf("mac") >= 0) {
 		rt.exec("open " + url);
 	    } else if (os.indexOf("nix") >= 0 || os.indexOf("nux") >= 0) {
-		// Do a best guess on unix until we get a platform independent way
-		// Build a list of browsers to try, in this order.
-		String[] browsers = { "firefox", "konqueror", "chromium", "netscape", "opera", "vivaldi", "chrome" };
-		// Build a command string which looks like "browser1 "url" || browser2 "url"
-		// ||..."
+		// Try the following browsers in the given order:
+		String[] browsers = { "firefox", "konqueror", "chromium", "epiphany-browser",
+			"falkpak run org.kde.falkon", "icecat", "lariza", "mybrowse", "netsurf", "palemoon",
+			"seamonkey", "slimjet", "vivaldi", "netscape", "opera", "chrome" };
 		StringBuffer cmd = new StringBuffer();
 		for (int i = 0; i < browsers.length; i++) {
 		    cmd.append((i == 0 ? "" : " || ") + browsers[i] + " \"" + url + "\" ");
