@@ -27,7 +27,7 @@ public abstract class IdeaCloudAbstractGenerator {
      * @param outputContent the content to write to the file
      * @throws IOException
      */
-    void generateOutputFile(AbstractBuilder outputContent) throws IOException {
+    public void generateOutputFile(AbstractBuilder outputContent) throws IOException {
 	File outputFile = new File(filename);
 	outputFile.createNewFile();
 	try (BufferedWriter out = new BufferedWriter(new FileWriter(outputFile.getAbsolutePath()));) {

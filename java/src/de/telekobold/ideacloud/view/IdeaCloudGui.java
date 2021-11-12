@@ -248,6 +248,12 @@ public class IdeaCloudGui {
 	jMenuItemNewIdeaCloud.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
 
 	JMenuItem jMenuItemSaveIdeaCloud = new JMenuItem("Save currently loaded idea cloud");
+	jMenuItemSaveIdeaCloud.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		saveIdeaCloud();
+	    }
+	});
 	jMenuFile.add(jMenuItemSaveIdeaCloud);
 	// An idea cloud is also saved through typing "Ctrl. + S":
 	jMenuItemSaveIdeaCloud.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
@@ -323,6 +329,10 @@ public class IdeaCloudGui {
     }
 
     private void saveIdeaCloud() {
-
+	if (ic_html == null || ic_css == null) {
+	    JOptionPane.showMessageDialog(IdeaCloudGui.this.jFrameIdeaCloudGui,
+		    "You must first add a new IdeaCloud to save it.");
+	}
+	ic_html.generateIdeaCloudHtmlFile(currentFilePathHtml);
     }
 }
