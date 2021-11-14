@@ -50,7 +50,8 @@ public class IdeaCloudGui {
     private String currentFilePathHtml;
     private String currentFilePathCss;
     private JTextField jTextFieldDeadline;
-    JLabel jLabelCurrentlyLoadedIdeaCloud;
+    private JTextArea jTextAreaDescribingText;
+    private JLabel jLabelCurrentlyLoadedIdeaCloud;
 //    private boolean unsavedContent = false;
 
     /**
@@ -109,7 +110,7 @@ public class IdeaCloudGui {
 
 	JLabel jLabelDeadline = new JLabel("Deadline");
 
-	JTextArea jTextAreaDescribingText = new JTextArea();
+	jTextAreaDescribingText = new JTextArea();
 	jTextAreaDescribingText.setText("Describing text");
 	jTextAreaDescribingText.selectAll(); // TODO: Only for newly added items
 
@@ -264,6 +265,7 @@ public class IdeaCloudGui {
 	    } else {
 		JOptionPane.showMessageDialog(IdeaCloudGui.this.jFrameIdeaCloudGui,
 			"Unsupported platform (other platform than Linux, Windows or MacOS.");
+		return;
 	    }
 	} catch (IOException e) {
 	    e.printStackTrace();
@@ -335,11 +337,9 @@ public class IdeaCloudGui {
 	    String filename = fc.getSelectedFile()
 		    .getAbsolutePath();
 	    // Avoid double file name extension if the user types ".html" manually:
-	    System.out.println(filename);
 	    if (!filename.endsWith(".html")) {
 		filename = filename.concat(".html");
 	    }
-	    System.out.println(filename);
 
 	    // Ask the user if an existing .html file should be overwritten. Existing .css
 	    // files with the same file name as the new .html files but the file name
@@ -372,11 +372,14 @@ public class IdeaCloudGui {
 	if (ic_html == null || ic_css == null) {
 	    JOptionPane.showMessageDialog(IdeaCloudGui.this.jFrameIdeaCloudGui,
 		    "You must first load an existing IdeaCloud or create a new one before adding a new item!");
+	    return;
 	}
 	IdeaCloudTriple<String, Integer, String>[] ideaCloudTriple = new IdeaCloudTriple[1];
 	String selectedPriority = (String) jComboBoxPriority.getSelectedItem();
+	// TODO: Add format check (yyyy-mm-dd or other format) for the content of
+	// jTextFieldDeadline
 	ideaCloudTriple[0] = new IdeaCloudTriple<String, Integer, String>(jTextFieldNewItem.getText(),
-		Integer.valueOf(selectedPriority), "1970-01-01");
+		Integer.valueOf(selectedPriority), jTextFieldDeadline.getText());
 //		jTextFieldDeadline.getText() == "" ? null : jTextFieldDeadline.getText());
 
 	ic_html.generateIdeaCloudHtmlContent(ideaCloudTriple);

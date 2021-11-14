@@ -55,13 +55,14 @@ public class IdeaCloudHtmlGenerator extends IdeaCloudAbstractGenerator {
 	    ideaCloud_html.add("<li><a href=\"./data/")
 		    .append(inputTag.getTagName() + ".html")
 		    .append("\" data-weight=\"")
-		    .append(Integer.toString(inputTag.getWeight()));
+		    .append(Integer.toString(inputTag.getWeight()))
+		    .append("\"");
 	    if (inputTag.getDeadline() != null) {
 		ideaCloud_html.append(" deadline=\"")
 			.append(inputTag.getDeadline())
 			.append("\"");
 	    }
-	    ideaCloud_html.append("\">")
+	    ideaCloud_html.append(">")
 		    .append(inputTag.getTagName())
 		    .append("</a></li>");
 	}
