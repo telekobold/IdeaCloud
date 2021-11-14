@@ -51,7 +51,7 @@ public class IdeaCloudGui {
     private String currentFilePathCss;
     private JTextField jTextFieldDeadline;
     JLabel jLabelCurrentlyLoadedIdeaCloud;
-    private boolean contentSaved = false;
+//    private boolean unsavedContent = false;
 
     /**
      * Launch the application.
@@ -193,7 +193,7 @@ public class IdeaCloudGui {
 	jMenuItemLoadIdeaCloud.addActionListener(new ActionListener() {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
-		fileSelectionHelper(FshEnum.LOAD_EXISTING);
+		loadIdeaCloud();
 	    }
 	});
 	jMenuFile.add(jMenuItemLoadIdeaCloud);
@@ -276,7 +276,108 @@ public class IdeaCloudGui {
 	}
     }
 
+    private void loadIdeaCloud() {
+	final JFileChooser fc = new JFileChooser();
+	FileNameExtensionFilter tgFileFilter = new FileNameExtensionFilter("HTML files", "html");
+	fc.setFileFilter(tgFileFilter);
+
+	int returnValue = fc.showOpenDialog(IdeaCloudGui.this.jFrameIdeaCloudGui);
+	if (returnValue == JFileChooser.APPROVE_OPTION) {
+	    String filename = fc.getSelectedFile()
+		    .getAbsolutePath();
+	    if (new File(filename).exists()) {
+		currentFilePathHtml = fc.getSelectedFile()
+			.getAbsolutePath();
+		// If the selected file does not end with ".html", it would not be displayed in
+		// the JFileChooser selection dialog. (This is not a problem since IdeaCloud
+		// only generates HTML files ending with .html.) So, no else branch is necessary
+		// for this if branch (and this if branch is only for safety).
+		if (currentFilePathHtml.endsWith(".html")) {
+		    // currentFilePathCss = currentFilePathHtml with the trailing ".html" replaced
+		    // by ".css".
+		    currentFilePathCss = currentFilePathHtml.substring(0, currentFilePathHtml.length() - 5) + ".css";
+		    if (new File(currentFilePathCss).exists()) {
+			ic_html = new IdeaCloudHtmlGenerator(currentFilePathHtml);
+			ic_css = new IdeaCloudCssGenerator(currentFilePathCss);
+			// Show the name of the loaded glossary as title of the window (just a
+			// workaround, should be solved nicer in future).
+			jFrameIdeaCloudGui.setTitle(fc.getSelectedFile()
+				.getName() + " - IdeaCloud 1.0");
+			// TODO: Display better name than the absolute file path:
+			jLabelCurrentlyLoadedIdeaCloud.setText("Currently loaded idea cloud: " + currentFilePathHtml);
+			JOptionPane.showMessageDialog(IdeaCloudGui.this.jFrameIdeaCloudGui,
+				"The selected idea cloud was loaded.");
+		    } else {
+			JOptionPane.showMessageDialog(IdeaCloudGui.this.jFrameIdeaCloudGui,
+				"No associated CSS file could be found. Idea cloud could not be loaded.");
+			return;
+		    }
+		}
+	    }
+	}
+    }
+
+    private void addNewIdeaCloud() {
+	// TODO: Detect if the text fields contain content but the "Add" button was not
+	// yet pressed:
+//	if ((ic_html != null || ic_css != null) && unsavedContent) {
+//	    int confirmResult = JOptionPane.showConfirmDialog(IdeaCloudGui.this.jFrameIdeaCloudGui,
+//		    "There is still unsaved content opened. Do you first want to save it?");
+//	    if (confirmResult == JOptionPane.YES_OPTION) {
+//		addIdeaCloudItem();
+//	    } else if (confirmResult == JOptionPane.CANCEL_OPTION) {
+//		return;
+//	    }
+//	}
+//	unsavedContent = false;
+
+	final JFileChooser fc = new JFileChooser();
+	FileNameExtensionFilter tgFileFilter = new FileNameExtensionFilter("HTML files", "html");
+	fc.setFileFilter(tgFileFilter);
+
+	int returnValue = fc.showSaveDialog(IdeaCloudGui.this.jFrameIdeaCloudGui);
+	if (returnValue == JFileChooser.APPROVE_OPTION) {
+	    String filename = fc.getSelectedFile()
+		    .getAbsolutePath();
+	    // Avoid double file name extension if the user types ".html" manually:
+	    System.out.println(filename);
+	    if (!filename.endsWith(".html")) {
+		filename = filename.concat(".html");
+	    }
+	    System.out.println(filename);
+
+	    // Ask the user if an existing .html file should be overwritten. Existing .css
+	    // files with the same file name as the new .html files but the file name
+	    // extension .css are overwritten without further warning.
+	    if (new File(filename).exists()) {
+		int confirmResult = JOptionPane.showConfirmDialog(IdeaCloudGui.this.jFrameIdeaCloudGui,
+			"Do you want to override the existing file " + filename + " ?");
+		if (confirmResult == JOptionPane.NO_OPTION || confirmResult == JOptionPane.CANCEL_OPTION) {
+		    addNewIdeaCloud();
+		    return;
+		}
+	    }
+
+	    currentFilePathHtml = filename;
+	    currentFilePathCss = currentFilePathHtml.substring(0, currentFilePathHtml.length() - 5) + ".css";
+	    ic_html = new IdeaCloudHtmlGenerator(currentFilePathHtml);
+	    ic_css = new IdeaCloudCssGenerator(currentFilePathCss);
+	    // The saving process is initially performed without content, but this way the
+	    // file can be loaded later e.g. for the case the computer crashes in the
+	    // meantime.
+	    saveIdeaCloud();
+	    jFrameIdeaCloudGui.setTitle(fc.getSelectedFile()
+		    .getName() + " - IdeaCloud 1.0");
+	    jLabelCurrentlyLoadedIdeaCloud.setText("Currently loaded idea cloud: " + currentFilePathHtml);
+	    JOptionPane.showMessageDialog(IdeaCloudGui.this.jFrameIdeaCloudGui, "The new IdeaCloud was added.");
+	}
+    }
+
     private void addIdeaCloudItem() {
+	if (ic_html == null || ic_css == null) {
+	    JOptionPane.showMessageDialog(IdeaCloudGui.this.jFrameIdeaCloudGui,
+		    "You must first load an existing IdeaCloud or create a new one before adding a new item!");
+	}
 	IdeaCloudTriple<String, Integer, String>[] ideaCloudTriple = new IdeaCloudTriple[1];
 	String selectedPriority = (String) jComboBoxPriority.getSelectedItem();
 	ideaCloudTriple[0] = new IdeaCloudTriple<String, Integer, String>(jTextFieldNewItem.getText(),
@@ -285,88 +386,19 @@ public class IdeaCloudGui {
 
 	ic_html.generateIdeaCloudHtmlContent(ideaCloudTriple);
 	ic_css.generateIdeaCloudCssContent();
+	saveIdeaCloud();
     }
 
-    private void addNewIdeaCloud() {
-	if ((ic_html != null || ic_css != null) && !contentSaved) {
-	    int confirmResult = JOptionPane.showConfirmDialog(IdeaCloudGui.this.jFrameIdeaCloudGui,
-		    "There is unsaved content. Do you first want to save it?");
-	    if (confirmResult == JOptionPane.YES_OPTION) {
-		saveIdeaCloud();
-	    }
-	}
-	contentSaved = false;
-	fileSelectionHelper(FshEnum.ADD_NEW);
-    }
-
-    private enum FshEnum {
-	LOAD_EXISTING, ADD_NEW
-    }
-
-    // TODO: Code so überarbeien, dass er je nach Wert von fshEnum passend
-    // funktioniert: An den entsprechenden Stellen passende if-Abfragen und in den
-    // Bodys entsprechendes Verhalten ergänzen.
-    private void fileSelectionHelper(FshEnum fshEnum) {
-	final JFileChooser fc = new JFileChooser();
-	FileNameExtensionFilter tgFileFilter = new FileNameExtensionFilter("HTML files", "html");
-	fc.setFileFilter(tgFileFilter);
-	// So that the open dialog is shown directly over the GlossarySearcher GUI.
-	int returnValue = fc.showOpenDialog(IdeaCloudGui.this.jFrameIdeaCloudGui);
-	if (returnValue == JFileChooser.APPROVE_OPTION) {
-	    String filename = fc.getSelectedFile()
-		    .getAbsolutePath();
-	    if (new File(filename).exists()) {
-		if (fshEnum == FshEnum.ADD_NEW) {
-		    int confirmResult = JOptionPane.showConfirmDialog(IdeaCloudGui.this.jFrameIdeaCloudGui,
-			    "Do you want to override the existing file " + filename + " ?");
-		    if (confirmResult == JOptionPane.NO_OPTION || confirmResult == JOptionPane.CANCEL_OPTION) {
-			fileSelectionHelper(fshEnum);
-			return;
-		    }
-		}
-	    }
-	    currentFilePathHtml = fc.getSelectedFile()
-		    .getAbsolutePath();
-	    // If the selected file does not end with ".html", it would not be displayed in
-	    // the JFileChooser selection dialog. (This is not a problem since IdeaCloud
-	    // only generates HTML files ending with .html.) So, no else branch is necessary
-	    // for this if branch (and this if branch is only for safety).
-	    if (currentFilePathHtml.endsWith(".html")) {
-		// currentFilePathCss = currentFilePathHtml with the trailing ".html" replaced
-		// by ".css".
-		currentFilePathCss = currentFilePathHtml.substring(0, currentFilePathHtml.length() - 5) + ".css";
-		if (new File(currentFilePathCss).exists()) {
-		    ic_html = new IdeaCloudHtmlGenerator(currentFilePathHtml);
-		    ic_css = new IdeaCloudCssGenerator(currentFilePathCss);
-		    // Show the name of the loaded glossary as title of the window (just a
-		    // workaround, should be solved nicer in future).
-		    jFrameIdeaCloudGui.setTitle(fc.getSelectedFile()
-			    .getName() + " - IdeaCloud 1.0");
-		    // TODO: Besseren Namen als den absoluten Dateipfad anzeigen.
-		    jLabelCurrentlyLoadedIdeaCloud.setText("Currently loaded idea cloud: " + currentFilePathHtml);
-		    JOptionPane.showMessageDialog(IdeaCloudGui.this.jFrameIdeaCloudGui,
-			    "The selected idea cloud was loaded.");
-		} else {
-		    JOptionPane.showMessageDialog(IdeaCloudGui.this.jFrameIdeaCloudGui,
-			    "No associated CSS file could be found. Idea cloud could not be loaded.");
-		    return;
-		}
-	    }
-	} else {
-	    JOptionPane.showMessageDialog(IdeaCloudGui.this.jFrameIdeaCloudGui, "Please select a valid file (.html)");
-	    return;
-	}
-    }
-
+    /**
+     * Generates a new HTML and a new CSS file using the content of {@code ic_html}
+     * and {@code ic_css}. May not be called if {@code ic_html} or {@code ic_css}
+     * are {@code null} (otherwise, a {@link NullPointerException} is raised).
+     */
     private void saveIdeaCloud() {
-	if (ic_html == null || ic_css == null) {
-	    JOptionPane.showMessageDialog(IdeaCloudGui.this.jFrameIdeaCloudGui,
-		    "You must first add a new IdeaCloud to save it.");
-	}
 	try {
 	    ic_html.generateOutputFile();
 	    ic_css.generateOutputFile();
-	    contentSaved = true;
+//	    unsavedContent = false;
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
