@@ -211,17 +211,6 @@ public class IdeaCloudGui {
 	// A new idea cloud is also created through typing "Ctrl. + N":
 	jMenuItemNewIdeaCloud.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
 
-	JMenuItem jMenuItemSaveIdeaCloud = new JMenuItem("Save currently loaded idea cloud");
-	jMenuItemSaveIdeaCloud.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		saveIdeaCloud();
-	    }
-	});
-	jMenuFile.add(jMenuItemSaveIdeaCloud);
-	// An idea cloud is also saved through typing "Ctrl. + S":
-	jMenuItemSaveIdeaCloud.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
-
 	JMenu jMenuHelp = new JMenu("Help");
 	menuBar.add(jMenuHelp);
 
