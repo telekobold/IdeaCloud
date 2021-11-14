@@ -26,7 +26,7 @@ import java.util.List;
  * <https://www.uni-koblenz-landau.de/de/koblenz/fb4/aktuelles/mitteilungen/innovationspreis-emp>).
  * </p>
  * 
- * @author Michael Merz <mail@telekobold.de>
+ * @author telekobold
  */
 public class HtmlBuilder extends AbstractBuilder {
 

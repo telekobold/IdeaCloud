@@ -34,7 +34,7 @@ import de.telekobold.ideacloud.codegenerator.IdeaCloudHtmlGenerator;
  * Developed with the help of the <i>WindowBuilder 1.9.1</i> Eclipse plugin by
  * the Eclipse Foundation.
  * 
- * @author Michael Merz <mail@telekobold.de>
+ * @author telekobold
  */
 public class IdeaCloudGui {
 

@@ -11,7 +11,7 @@ import de.telekobold.ideacloud.IdeaCloudTriple;
  * "https://dev.to/alvaromontoro/create-a-tag-cloud-with-html-and-css-1e90">cloud
  * tag generation tutorial</a> from Alvaro Montoro.
  * 
- * @author Michael Merz <mail@telekobold.de>
+ * @author telekobold
  */
 public class IdeaCloudHtmlGenerator extends IdeaCloudAbstractGenerator {
 

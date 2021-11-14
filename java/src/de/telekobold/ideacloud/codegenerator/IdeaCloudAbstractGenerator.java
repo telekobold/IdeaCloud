@@ -8,7 +8,7 @@ import java.io.IOException;
 /**
  * Base class for all IdeaCloud code generator classes.
  * 
- * @author Michael Merz <mail@telekobold.de>
+ * @author telekobold
  */
 public abstract class IdeaCloudAbstractGenerator {
 

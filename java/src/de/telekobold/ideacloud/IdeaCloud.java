@@ -9,7 +9,7 @@ import de.telekobold.ideacloud.codegenerator.IdeaCloudHtmlGenerator;
  * The main method of this class contains test code for the generation of a new
  * idea cloud.
  * 
- * @author Michael Merz <mail@telekobold.de>
+ * @author telekobold
  */
 public class IdeaCloud {
 

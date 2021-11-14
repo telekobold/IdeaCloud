@@ -9,7 +9,7 @@ import java.io.IOException;
  * tag generation tutorial</a> from Alvaro Montoro.
  * </p>
  * 
- * @author Michael Merz <mail@telekobold.de>
+ * @author telekobold
  */
 public class IdeaCloudCssGenerator extends IdeaCloudAbstractGenerator {
 

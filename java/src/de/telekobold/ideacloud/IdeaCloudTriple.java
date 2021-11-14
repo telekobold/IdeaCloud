@@ -6,7 +6,7 @@ package de.telekobold.ideacloud;
  * which is again derived from
  * {@link https://github.com/apache/commons-lang/blob/master/src/main/java/org/apache/commons/lang3/tuple/Triple.java}
  * 
- * @author Michael Merz <mail@telekobold.de>
+ * @author telekobold
  */
 public class IdeaCloudTriple<T, U, V> {
 
