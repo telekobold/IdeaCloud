@@ -225,12 +225,18 @@ public class IdeaCloudGui {
 	JMenu jMenuHelp = new JMenu("Help");
 	menuBar.add(jMenuHelp);
 
-	JMenuItem jMenuItemHelp = new JMenuItem("Help");
-	jMenuHelp.add(jMenuItemHelp);
-	// The help menu is also invoked through typing "Ctrl. + H":
-	jMenuItemHelp.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, ActionEvent.CTRL_MASK));
-
 	JMenuItem jMenuItemAbout = new JMenuItem("About");
+	jMenuItemAbout.addActionListener(new ActionListener() {
+
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		JOptionPane.showMessageDialog(IdeaCloudGui.this.jFrameIdeaCloudGui,
+			"                                                               IdeaCloud 1.0 by telekobold.\n"
+				+ "                    This program is under MIT license and comes with absolutely no warrany.\n"
+				+ "More informations and the source code can be found at https://github.com/telekobold/IdeaCloud");
+	    }
+
+	});
 	jMenuHelp.add(jMenuItemAbout);
     }
 
